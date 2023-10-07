@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../../../constant/url/app_api_url.dart';
-import '../../data/model/courses/course.dart';
+import '../../data/model/course.dart';
 
 class CourseDesignWidget extends StatelessWidget {
   final List<Course> courses;
@@ -40,7 +41,7 @@ class VideoCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.0),
                 Text(
-                  'Category: ${course.name}',
+                  'Category: ${course.category}',
                   style: TextStyle(fontSize: 16.0),
                 ),
                 Text(

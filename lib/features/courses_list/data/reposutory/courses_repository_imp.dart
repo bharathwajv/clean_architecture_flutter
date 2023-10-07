@@ -1,6 +1,7 @@
-import 'package:clean_architecture_flutter/constant/url/app_api_url.dart';
-import 'package:clean_architecture_flutter/core/error/failures.dart';
-import 'package:clean_architecture_flutter/features/courses_list/domain/repository/courses_repo.dart';
+import '../../../../core/error/failures.dart';
+
+import '../../../../constant/url/app_api_url.dart';
+import '../../domain/repository/courses_repo.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/base/base_repo.dart';
 import '../../domain/entities/courses.dart';
@@ -12,14 +13,19 @@ class CoursesRepositoryImp extends MainRepository implements CoursesRepository {
     required super.networkInfo,
   });
   Future<Either<dynamic, Courses>> getCourses() async {
-    final result=await data(
-      getData: () => remoteData.get(
-        path: AppApiUrl.STUDENT_COURSES_URL,
-        headers: headers,
-        model: Courses(),
-      ),
-      needCash: false,
-    );
-  return result.fold((l) => Left(l), (Courses) => Right(Courses));
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      final result = await data(
+        getData: () => remoteData.get(
+          path: AppApiUrl.STUDENT_COURSES_URL,
+          headers: headers,
+          model: Courses(),
+        ),
+        needCash: false,
+      );
+      return result.fold((l) => Left(l), (Courses) => Right(Courses));
+    } else {
+      return Left(NetworkFailure('You Are Offline'));
+    }
   }
 }

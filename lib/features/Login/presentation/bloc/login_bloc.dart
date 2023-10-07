@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import '../../../../di.dart';
+
+import '../../../common_forms/common_form.dart';
 import '../../data/model/request/login/login_request.dart';
 import '../../domain/use_case/login_use_case.dart';
-import '../../../common_forms/login_form.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final loginUseCase = LoginUseCase(getIt());
+  final LoginUseCase loginUseCase;
 
-  LoginBloc() : super(const LoginState()) {
+  LoginBloc(this.loginUseCase) : super(const LoginState()) {
     on<LoginButtonPressed>(_onSubmitted);
     on<LoginEmailChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
